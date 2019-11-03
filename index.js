@@ -8,18 +8,20 @@ async function main() {
 
     const conf = parseCmdLine();
 
-    let inputYaml = readAllStdIn();
+    let inputYaml = await readAllStdIn();
 
-    for (const fromTo of conf.s) {
-        const parts = fromTo.split('=');
-        if (parts.length !== 2) {
-            throw new Error("-s flag must be given on the form -s from=to")
+    if (conf.s) {
+        for (const fromTo of conf.s) {
+            const parts = fromTo.split('=');
+            if (parts.length !== 2) {
+                throw new Error("-s flag must be given on the form -s from=to")
+            }
+
+            const from = parts[0];
+            const to = parts[1];
+
+            inputYaml = inputYaml.replace(new RegExp(from, 'g'), to);
         }
-
-        const from = parts[0];
-        const to = parts[1];
-
-        inputYaml = inputYaml.replace(from, to);
     }
 
     let doc = yaml.safeLoad(inputYaml);
@@ -34,19 +36,16 @@ async function main() {
 
 }
 
-function readAllStdIn() {
-    try {
-        return fs.readFileSync(process.stdin.fd).toString();
-    } catch (error) {
-        throw new Error("Missing stdin input");
+async function readAllStdIn() {
+    let buffer = Buffer.alloc(0);
+    for await (const chunk of process.stdin) {
+        buffer = Buffer.concat([buffer, chunk]);
     }
+    return buffer.toString('utf8');
 }
 
 function filterItem(docIn) {
 
-    return docIn; // todo: implement
-
-    /*
     if (!docIn) {
         return docIn
     }
@@ -86,7 +85,7 @@ function filterItem(docIn) {
 
     delete docOut.status;
 
-    return docOut*/
+    return docOut
 }
 
 function clone(a) {
