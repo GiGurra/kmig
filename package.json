@@ -1,0 +1,29 @@
+{
+  "name": "kmig",
+  "version": "1.0.0",
+  "description": "Migrate kubernetes resources from one cluster/ns/etc to another",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gigurra/kmig.git"
+  },
+  "bin": {
+    "kmig": "./index.js"
+  },
+  "keywords": [
+    "kubernetes"
+  ],
+  "author": "Johan Kjölhede",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gigurra/kmig/issues"
+  },
+  "homepage": "https://github.com/gigurra/kmig#readme",
+  "dependencies": {
+    "js-yaml": "^3.13.1",
+    "yargs": "^14.2.0"
+  }
+}
