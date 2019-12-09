@@ -32,7 +32,7 @@ async function main() {
         doc = filterItem(doc, conf)
     }
 
-    console.log(yaml.safeDump(doc))
+    console.log(yaml.safeDump(doc, {lineWidth: -1}))
 
 }
 
