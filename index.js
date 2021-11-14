@@ -66,14 +66,19 @@ function filterItem(docIn) {
             delete docOut.metadata.annotations['cattle.io/status'];
             delete docOut.metadata.annotations['pv.kubernetes.io/bound-by-controller']
         }
+
         delete docOut.metadata.creationTimestamp;
         delete docOut.metadata.resourceVersion;
         delete docOut.metadata.selfLink;
         delete docOut.metadata.uid;
         delete docOut.metadata.ownerReferences;
         delete docOut.metadata.generation;
+
         if (docOut.metadata.labels) {
             //delete docOut.metadata.labels['cattle.io/creator'] // norman deserves to be left alone
+
+            delete docOut.metadata.labels['tanka.dev/environment'];
+
         }
     }
 
@@ -90,7 +95,27 @@ function filterItem(docIn) {
 
     delete docOut.status;
 
-    return docOut
+    return removeEmpty(docOut);
+}
+
+function removeEmpty(obj) {
+    const newObj = {};
+    Object.entries(obj).forEach(([k, v]) => {
+        if (v === Object(v)) {
+            const inner = removeEmpty(v);
+            if (Object.keys(inner).length !== 0) {
+                newObj[k] = removeEmpty(v);
+            }
+        } else if (v != null) {
+
+            newObj[k] = obj[k];
+        }
+    });
+    return newObj;
+}
+
+function isObject(a) {
+    return (!!a) && (a.constructor === Object);
 }
 
 function clone(a) {
