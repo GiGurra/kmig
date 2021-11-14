@@ -114,10 +114,6 @@ function removeEmpty(obj) {
     return newObj;
 }
 
-function isObject(a) {
-    return (!!a) && (a.constructor === Object);
-}
-
 function clone(a) {
     return JSON.parse(JSON.stringify(a));
 }
