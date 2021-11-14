@@ -106,7 +106,7 @@ function filterItem(docIn) {
 function removeEmpty(obj) {
     const newObj = {};
     Object.entries(obj).forEach(([k, v]) => {
-        if (v === Object(v)) {
+        if (v && isObject(v) && v === Object(v)) {
             const inner = removeEmpty(v);
             if (Object.keys(inner).length !== 0) {
                 newObj[k] = removeEmpty(v);
@@ -117,6 +117,10 @@ function removeEmpty(obj) {
         }
     });
     return newObj;
+}
+
+function isObject(a) {
+    return (!!a) && (a.constructor === Object);
 }
 
 function clone(a) {
