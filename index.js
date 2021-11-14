@@ -52,11 +52,16 @@ function filterItem(docIn) {
 
     const docOut = clone(docIn);
 
-    if (docOut.metadata) {
+    if (docOut.kind === "ServiceAccount") {
+        delete docOut['secrets'];
+    }
 
-        if (docOut.kind === "ServiceAccount") {
-            delete docOut['secrets'];
-        }
+    if (docOut.kind === "Service") {
+        delete docOut.clusterIP;
+        delete docOut.clusterIPs;
+    }
+
+    if (docOut.metadata) {
 
         if (docOut.metadata.annotations) {
             //delete docOut.metadata.annotations['field.cattle.io/creatorId'] // needed for rancher to auto create services
