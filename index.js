@@ -53,6 +53,11 @@ function filterItem(docIn) {
     const docOut = clone(docIn);
 
     if (docOut.metadata) {
+
+        if (docOut.kind === "ServiceAccount") {
+            delete docOut['secrets'];
+        }
+
         if (docOut.metadata.annotations) {
             //delete docOut.metadata.annotations['field.cattle.io/creatorId'] // needed for rancher to auto create services
             delete docOut.metadata.annotations['kubectl.kubernetes.io/last-applied-configuration'];
