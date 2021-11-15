@@ -57,8 +57,8 @@ function filterItem(docIn) {
     }
 
     if (docOut.kind === "Service") {
-        delete docOut.clusterIP;
-        delete docOut.clusterIPs;
+        delete docOut.spec.clusterIP;
+        delete docOut.spec.clusterIPs;
     }
 
     if (docOut.metadata) {
